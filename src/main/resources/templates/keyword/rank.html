@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>인기 키워드 목록</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h3>인기 키워드 목록</h3>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-md-10">키워드</th>
+                    <th class="col-md-2">검색 횟수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="keyword : ${keywordRank}">
+                    <td th:text="${keyword.text}"></td>
+                    <td th:text="${keyword.cnt}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

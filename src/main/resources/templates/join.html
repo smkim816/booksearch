@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container">
+        <h3>회원가입</h3>
+        <br />
+        <input id="id" type="text" class="input-sm" placeholder="아이디" />
+        <br />
+        <input id="password" type="password" class="input-sm" placeholder="비밀번호" />
+        <br />
+        <br />
+        <button type="button" class="btn btn-primary" id="join">확인</button>
+    </div>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script>
+        $('#join').click(function () {
+            if ($('#id').val() != "" && $('#password').val() != "") {
+                var jsonData = JSON.stringify({
+                    id: $('#id').val(),
+                    password: $('#password').val()
+                });
+                $.ajax({
+                    url: "/join",
+                    type: "POST",
+                    data: jsonData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function () {
+                        location.href = '/login';
+                    },
+                    error: function () {
+                        alert('회원가입 실패!');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

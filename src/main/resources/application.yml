@@ -1,0 +1,4 @@
+kakao:
+  api:
+    url: https://dapi.kakao.com/v3/search/book
+    auth: bbdb7a09bdd144015e9294efe822dd87

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>오류</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container">
+    <form method="post">
+        <h3>오류가 발생하였습니다!</h3>
+        <br />
+        <br />
+        <a th:href="@{/login}" class="btn btn-info">로그인 화면으로</a>
+    </form>
+</div>
+</body>
+</html>

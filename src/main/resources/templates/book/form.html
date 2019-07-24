@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="${book[0].title}"></title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h3 th:text="${book[0].title}"></h3>
+        </div>
+        <img th:attr="src=${book[0].thumbnail}" />
+        <br />
+        <br />
+        <table class="table">
+            <tr>
+                <th class="col-md-1 text-center">소개</th>
+                <td class="col-md-11" th:text="${book[0].contents}"></td>
+            </tr>
+            <tr>
+                <th class="col-md-1 text-center">ISBN</th>
+                <td class="col-md-11" th:text="${book[0].isbn}"></td>
+            </tr>
+            <tr>
+                <th class="col-md-1 text-center">저자</th>
+                <td class="col-md-11">
+                    <div th:each="author : ${book[0].authors}">
+                        <span th:text="${author}"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th class="col-md-1 text-center">출판사</th>
+                <td class="col-md-11" th:text="${book[0].publisher}"></td>
+            </tr>
+            <tr>
+                <th class="col-md-1 text-center">출판일</th>
+                <td class="col-md-11" th:text="${book[0].datetime}"></td>
+            </tr>
+            <tr>
+                <th class="col-md-1 text-center">정가</th>
+                <td class="col-md-11" th:text="${book[0].price}"></td>
+            </tr>
+            <tr>
+                <th class="col-md-1 text-center">판매가</th>
+                <td class="col-md-11" th:text="${book[0].sale_price}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

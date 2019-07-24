@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>책 검색</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h3>책 검색</h3>
+        </div>
+        <div class="row pull-right">
+            <div class="col-md-8">
+                <input id="query" type="text" class="form-control input-sm" />
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary" id="search">검색</button>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-6">제목</th>
+                        <th class="col-md-3">저자</th>
+                        <th class="col-md-2">출판사</th>
+                        <th class="col-md-1">출판일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="book : ${bookList}">
+                        <td>
+                            <a th:href="@{/book(query=${book.isbn})}" th:text="${book.title}"></a>
+                        </td>
+                        <td th:text="${book.authors[0]}"></td>
+                        <td th:text="${book.publisher}"></td>
+                        <td th:text="${book.datetime}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row pull-right">
+            <div class="col-md-6">
+                <a th:href="@{/keyword/history}" class="btn btn-info">내 검색 히스토리</a>
+            </div>
+            <div class="col-md-6">
+                <a th:href="@{/keyword/rank}" class="btn btn-info">인기 키워드 목록</a>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <nav aria-label="Page navigation" style="text-align:center;">
+            <ul class="pagination" th:with="startNumber=(${page} > 5) ? ${page}-4 : ((${pageInfo.pageable_count} == 0) ? 0 : 1), endNumber=(${pageInfo.pageable_count} > ${startNumber}+9) ? ${startNumber}+9 : ${pageInfo.pageable_count}">
+                <li>
+                    <a aria-label="Previous" th:href="@{/book/list(query=${query},page=1)}">&laquo;</a>
+                </li>
+                <li th:style="${page} == 1 ? 'display:none' : (${startNumber} == 0 ? 'display:none')">
+                    <a th:href="@{/book/list(query=${query},page=${page}-1)}">&lsaquo;</a>
+                </li>
+                <li th:each="goto :${#numbers.sequence(startNumber, endNumber)}" th:class="(${goto} == ${page}) ? 'active'">
+                    <a th:href="@{/book/list(query=${query},page=${goto})}" th:text="${goto}">
+                        <span class="sr-only"></span>
+                    </a>
+                </li>
+                <li th:style="${pageInfo.is_end} ? 'display:none' : (${endNumber} == 0 ? 'display:none')">
+                    <a th:href="@{/book/list(query=${query},page=${page}+1)}">&rsaquo;</a>
+                </li>
+                <li>
+                    <a aria-label="Next" th:href="@{/book/list(query=${query},page=${pageInfo.pageable_count})}">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script>
+        $('#search').click(function () {
+            if ($('#query').val() != "") {
+                var jsonData = JSON.stringify({
+                    text: $('#query').val()
+                });
+                $.ajax({
+                    url: "/keyword",
+                    type: "POST",
+                    data: jsonData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function () {
+                        location.href = '/book/list?page=1&query=' + $('#query').val();
+                    },
+                    error: function () {
+                        alert('키워드 저장 실패!');
+                    }
+                });
+            }
+        });
+        $('#query').keypress(function(event){
+             if ( event.which == 13 ) {
+                 $('#search').click();
+                 return false;
+             }
+        });
+    </script>
+</body>
+</html>

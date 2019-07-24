@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>내 검색 히스토리</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h3>내 검색 히스토리</h3>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-10">키워드</th>
+                        <th class="col-md-2">검색 일시</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="keyword : ${keywordHistory}">
+                        <td th:text="${keyword.text}"></td>
+                        <td th:text="${keyword.date} ? ${#temporals.format(keyword.date,'yyyy-MM-dd HH:mm:ss')} : ${keyword.date}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <nav aria-label="Page navigation" style="text-align:center;">
+            <ul class="pagination" th:with="startNumber=(${keywordHistory.totalPages} == 0) ? 0 : ${T(Math).floor(keywordHistory.number/10)}*10+1, endNumber=(${keywordHistory.totalPages} > ${startNumber}+9) ? ${startNumber}+9 : ${keywordHistory.totalPages}">
+                <li>
+                    <a aria-label="Previous" href="/keyword/history?page=1">&laquo;</a>
+                </li>
+                <li th:style="${keywordHistory.first} ? 'display:none'">
+                    <a th:href="@{/keyword/history(page=${keywordHistory.number})}">&lsaquo;</a>
+                </li>
+                <li th:each="page :${#numbers.sequence(startNumber, endNumber)}" th:class="(${page} == ${keywordHistory.number}+1) ? 'active'">
+                    <a th:href="@{/keyword/history(page=${page})}" th:text="${page}">
+                        <span class="sr-only"></span>
+                    </a>
+                </li>
+                <li th:style="${keywordHistory.last} ? 'display:none'">
+                    <a th:href="@{/keyword/history(page=${keywordHistory.number}+2)}">&rsaquo;</a>
+                </li>
+                <li>
+                    <a aria-label="Next" th:href="@{/keyword/history(page=${keywordHistory.totalPages})}">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>
